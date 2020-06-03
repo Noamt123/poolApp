@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <html lang="en">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 	<head>
 		<meta charset="utf-8" name="FRC Team 5945" content="Maple Lawn pool availability">
 
@@ -10,7 +12,21 @@
 
 	<body>
 		<h1>hello!!!!!</h1>
-		{% set poop = poop+1 %}
-		<p>Number {{ poop }}</p>
+		<div id="thing">
+		</div>
+
+		<p id="why">Number {{ c }}</p>
+		<br />
+		<button type="button" name="add" id="add" class="button">+</button>
+		<br />
 	</body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$("#add").click(function(){
+			$.post("/add", "MEGAJESUS")
+
+		})
+	})
+</script>
