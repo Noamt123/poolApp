@@ -1,0 +1,123 @@
+.container {
+	padding: 16px;
+}
+
+.submbutton {
+	background-color: lightblue;
+	color: black;
+	width: 40px;
+	height: 28px;
+	font-size: 10px;
+}
+.resetb {
+	background-color: gray;
+	color: black;
+	width: 50px;
+	height: 20px;
+	font-size: 10px;
+}
+button {
+      padding: 0;
+      border: none;
+      font: inherit;
+      color: inherit;
+      background-color: transparent;
+      cursor: pointer;
+}
+/* used a lot of the button style code from https://fvsch.com/styling-buttons */
+.addbutton {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+
+  margin: 2px 0;
+
+
+  border: solid 1px transparent;
+  border-radius: 4px;
+
+  font-size: 200px;
+
+  color: white;
+  background-color: red;
+
+  width: 300px;
+  height: 300px;
+}
+
+
+.addbutton:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+
+
+.addbutton:hover {
+  color: white;
+  border-color: currentColor;
+  background-color: #8B0000;
+}
+
+
+.addbutton::-moz-focus-inner {
+  border: none;
+}
+
+
+.addbutton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.5),
+    0 0 0 1.5px rgba(255, 105, 180, 0.5);
+}
+
+.subbutton {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+
+  margin: 2px 0;
+
+  padding-right: 50px;
+
+  border: solid 1px transparent;
+  border-radius: 4px;
+
+  font-size: 200px;
+
+  color: white;
+  background-color: blue;
+
+  width: 300px;
+  height: 300px;
+}
+
+
+.subbutton:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+
+
+.subbutton:hover {
+  color: white;
+  border-color: currentColor;
+  background-color: #000080;
+}
+
+
+.subbutton::-moz-focus-inner {
+  border: none;
+}
+
+
+.subbutton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.5),
+    0 0 0 1.5px rgba(255, 105, 180, 0.5);
+}
+
+.divider {
+	width: 40px;
+	height: auto;
+	display: inline-block;
+}
