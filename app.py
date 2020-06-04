@@ -6,6 +6,7 @@ from flask import abort
 app = Flask(__name__)
 
 a =0
+pa = "the-password"
 
 @app.route('/')
 @app.route('/home')
@@ -44,16 +45,6 @@ def sub():
 		a -= 1
 		print(str(a))
 		return (str(a))
-	else:
-		abort(403)
-
-@app.route('/pass', methods=["POST", "GET"])
-def pass():
-	p  = ""
-	b = request.data
-	p = str(b, 'utf-8')
-	if(p == "J2iK+D35pUrgU+UzHcR+dN6qoiQ="):
-		return "the-password"
 	else:
 		abort(403)
 
