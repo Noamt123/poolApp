@@ -7,12 +7,14 @@ app = Flask(__name__)
 
 a =0
 pa = "the-password"
+cap = 25
 
 @app.route('/')
 @app.route('/home')
 def index():
 	global a
-	return render_template('index.html',c=a)
+	b = cap-a
+	return render_template('index.html',c=a,ca=b, cap=cap)
 
 @app.route('/add', methods=["POST", "GET"])
 def add():
@@ -31,8 +33,8 @@ def add():
 @app.route('/admin')
 def admin():
 	global a
-	b = 25-a
-	return render_template('admin.html', c=a, p=pa, ca=b)
+	b = cap-a
+	return render_template('admin.html', c=a, p=pa, ca=b, cap=cap)
 
 
 @app.route('/sub',methods=["POST","GET"])
@@ -53,9 +55,10 @@ def sub():
 def reset():
 	b3 = ""
 	global a
+	request.get_data(as_text=True)
 	b = request.data
 	b3 = str(b, 'utf-8')
-	if(br == "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="):
+	if(b3 == "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="):
 		a = 0
 		print(str(a))
 		return (str(a))
@@ -64,7 +67,7 @@ def reset():
 
 @app.route('/see')
 def  see():
-	return ("there are ", str(a), " people in the pool.\n", str(25-a), " more people can enter the pool\n\n", "The pool's capacity is 25")
+	return str(a)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=80, debug=True)

@@ -23,13 +23,17 @@
 			<button name="login" id="login" type="button" class="submbutton">Login</button>
 		</div>
 		<div id="stuff" style="display: none">
-			<h3>The pool's capacity is 25 people</h3>
+			<h3>The pool's capacity is {{ cap }} people</h3>
 			<br />
 			<h3 style="color: darkgreen">The pool has {{ c }} people in it</h3>
 			<h3 style="color: red">The pool can have {{ ca }} more people enter</h3>
 			<br />
 			<p>Refresh to update numbers(you will have to re-enter the password)</p>
 			<br />
+			<label for="see"><b>Use this button to see(without refreshing) how many people are in the pool</b></label>
+			<div style="display: block">
+				<button name="see" id="see" class="seeb">See</button>
+			</div>
 			<div style="display: inline">
 					<label for="add"><b>Person goes into the pool</b></label>
 					<button name="add" id="add" class="addbutton">+</button>
@@ -61,7 +65,20 @@
 			}
 		})
 		$("#add").click(function(){
-			$.post("/add", "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw==")
+			$.post("/add", "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw==");
+		})
+		$("#sub").click(function(){
+			$.post("/sub", "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA==");
+		})
+		$("#see").click(function(){
+			$.get("/see", function(data, status){
+				alert("There are "+data+" people at the pool\n"+({{ cap }}-data)+" more people can enter the pool\nThe pools max capacity is "+({{ cap }}));
+			})
+		})
+		$('#reset').click(function(){
+			$.post("/reset", "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA==", function(data, status){
+				alert("The outcome of the reset request: "+status+"\nThe reset value of people in the pool: "+data);
+			})
 		})
 	})
 </script>
