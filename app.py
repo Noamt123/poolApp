@@ -8,6 +8,9 @@ app = Flask(__name__)
 a =0
 pa = "the-password"
 cap = 25
+ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
+su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
+re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 
 @app.route('/')
 @app.route('/home')
@@ -34,7 +37,7 @@ def add():
 def admin():
 	global a
 	b = cap-a
-	return render_template('admin.html', c=a, p=pa, ca=b, cap=cap)
+	return render_template('admin.html', c=a, p=pa, ca=b, cap=cap, ad=ad, su=su, re=re)
 
 
 @app.route('/sub',methods=["POST","GET"])

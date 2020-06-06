@@ -65,10 +65,10 @@
 			}
 		})
 		$("#add").click(function(){
-			$.post("/add", "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw==");
+			$.post("/add", "{{ ad }}");
 		})
 		$("#sub").click(function(){
-			$.post("/sub", "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA==");
+			$.post("/sub", "{{ su }}");
 		})
 		$("#see").click(function(){
 			$.get("/see", function(data, status){
@@ -76,7 +76,7 @@
 			})
 		})
 		$('#reset').click(function(){
-			$.post("/reset", "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA==", function(data, status){
+			$.post("/reset", "{{ re }}", function(data, status){
 				alert("The outcome of the reset request: "+status+"\nThe reset value of people in the pool: "+data);
 			})
 		})
