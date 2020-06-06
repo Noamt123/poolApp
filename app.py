@@ -2,8 +2,16 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import abort
+from flask_sqlalchemy import SQLAlchemy
+from DateTime import DateTime
+from datetime  import datetime
 
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pool.db'
+
+db = SQLAlchemy(app)
 
 a =0
 pa = "the-password"
@@ -11,6 +19,13 @@ cap = 25
 ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
+
+class person(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	fname = db.Column(db.String(50))
+	lname = db.Column(db.String(50))
+	date_entered = db.Column(db.DateTime, default=datetime.now)
+	date_left = db.Column(db.DateTime, default=datetime.now)
 
 @app.route('/')
 @app.route('/home')
