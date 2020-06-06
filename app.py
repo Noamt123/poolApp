@@ -9,7 +9,7 @@ from datetime  import datetime
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pool.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
 db = SQLAlchemy(app)
 
@@ -20,12 +20,12 @@ ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 
-class person(db.Model):
+class Person(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	fname = db.Column(db.String(50))
-	lname = db.Column(db.String(50))
-	date_entered = db.Column(db.DateTime, default=datetime.now)
-	date_left = db.Column(db.DateTime, default=datetime.now)
+	fname = db.Column(db.String(60))
+	gone = db.Column(db.Integer)
+	enter_time = db.Column(db.DateTime, default=datetime.now)
+	leave_time = db.Column(db.DateTime)
 
 @app.route('/')
 @app.route('/home')
@@ -100,6 +100,23 @@ def passw():
 	else:
 		return "U_R_WRONG"
 
+@app.route('/enter/<fname>', methods=["POST","GET"])
+def enter(fname):
+	person = Person(fname=fname, gone=0)
+	db.session.add(person)
+	db.session.commit()
+
+	return "<h1>a person entered the pool</h1>"
+
+@app.route('/exit/<fname>', methods=["POST","GET"])
+def exit(fname):
+	person = Person.query.filter_by(fname=fname, gone=0).first()
+	person.gone = 1
+	person.leave_time = datetime.now()
+	db.session.commit()
+
+	return '<h1>a person has left the pool</h1>'
+
 #used for debugging when activated(run 'python app.py' to debug)
-#if __name__ == '__main__':
-#	app.run(host="0.0.0.0", port=80, debug=True)
+if __name__ == '__main__':
+	app.run(host="0.0.0.0", port=80, debug=True)
