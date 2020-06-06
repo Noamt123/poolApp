@@ -71,3 +71,20 @@ def reset():
 @app.route('/see')
 def  see():
 	return str(a)
+
+@app.route('/pass', methods=["POST","GET"])
+def passw():
+	bp =  ""
+	request.get_data(as_text=True)
+	b = request.data
+	bp = str(b, 'utf-8')
+	print("attempted login with: ",bp)
+	if(bp == "the-password"):
+		print("Someone logged in")
+		return "U_R_IN"
+	else:
+		return "U_R_WRONG"
+
+#used for debugging when activated(run 'python app.py' to debug)
+if __name__ == '__main__':
+	app.run(host="0.0.0.0", port=80, debug=True)

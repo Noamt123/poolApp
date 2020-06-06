@@ -55,14 +55,16 @@
 	$(document).ready(function(){
 		$("#login").click(function(){
 			var attempt = document.getElementById("pass").value;
-			if(attempt == ("{{ p  }}")) {
-				document.getElementById("log").style.display = "none";
-				document.getElementById("stuff").style.display = "block";
-				alert("The password is correct.");
-			}
-			else {
-				alert("Incorrect password please try again.");
-			}
+			$.post("/pass", attempt, function(data, status){
+				if(data == "U_R_IN"){
+					document.getElementById("log").style.display =  "none";
+					document.getElementById("stuff").style.display  =  "block";
+					alert("The password is correct.");
+				}
+				else{
+					alert("Incorrect password please try again.");
+				}
+			});
 		})
 		$("#add").click(function(){
 			$.post("/add", "{{ ad }}");
