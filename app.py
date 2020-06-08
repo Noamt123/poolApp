@@ -19,6 +19,10 @@ cap = 25
 ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
+en = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
+ex = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
+
+peoplein  = "Jesus Christ,Dimitri Blaiddyd"
 
 class Person(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -100,22 +104,56 @@ def passw():
 	else:
 		return "U_R_WRONG"
 
+@app.route('/checkin')
+def checkin():
+	b = cap-a
+
+	return render_template('checkin.html',c=a,ca=b, cap=cap,peo=peoplein, en=en)
+
+@app.route('/checkout')
+def checkout():
+	return render_template('checkout.html',ex=ex,peo=peoplein)
+
 @app.route('/enter/<fname>', methods=["POST","GET"])
 def enter(fname):
-	person = Person(fname=fname, gone=0)
-	db.session.add(person)
-	db.session.commit()
+	bp = ""
+	request.get_data(as_text=True)
+	b = request.data
+	bp =str(b, 'utf-8')
+	bo = bool(Person.query.filter_by(fname=fname,gone=0).first())
+	if(bp == "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA==" and bo ==  False):
+		person = Person(fname=fname, gone=0)
+		db.session.add(person)
+		print(fname, " arrived at the pool")
+		db.session.commit()
+		return "It work"
 
-	return "<h1>a person entered the pool</h1>"
+	elif(bp == "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA==" and bo):
+		return "Already here"
+	else:
+		return "No"
 
 @app.route('/exit/<fname>', methods=["POST","GET"])
 def exit(fname):
-	person = Person.query.filter_by(fname=fname, gone=0).first()
-	person.gone = 1
-	person.leave_time = datetime.now()
-	db.session.commit()
+	bp = ""
+	request.get_data(as_text=True)
+	b = request.data
+	bp = str(b, 'utf-8')
+	bo = bool(Person.query.filter_by(fname=fname,gone=0).first())
+	print(bo)
+	if(bp == "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw==" and bo):
+		person = Person.query.filter_by(fname=fname, gone=0).first()
+		person.gone = 1
+		person.leave_time = datetime.now()
+		print(fname, " left the pool")
+		db.session.commit()
+		return("It work")
 
-	return '<h1>a person has left the pool</h1>'
+	elif(bp == "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw==" and bo == False):
+		return "Gone"
+
+	else:
+		return "No"
 
 #used for debugging when activated(run 'python app.py' to debug)
 if __name__ == '__main__':
