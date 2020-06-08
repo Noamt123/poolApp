@@ -5,13 +5,18 @@ from flask import abort
 from flask_sqlalchemy import SQLAlchemy
 from DateTime import DateTime
 from datetime  import datetime
+import os
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+
 db = SQLAlchemy(app)
+
 
 a =0
 pa = "the-password"
