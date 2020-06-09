@@ -23,6 +23,18 @@
 			<button name="login" id="login" type="button" class="submbutton">Login</button>
 		</div>
 		<div id="stuff" style="display: none">
+			<h2>Enter family into pool database</h2>
+			<br />
+			<h3>Enter in this format:</h3>
+			<p>Lastname, address, can they enter the pool(0(no) or 1(yes))</p>
+			<div>
+				<input type="text" id="lname" placeholder="Last Name...">
+				<input type="text" id="addre" placeholder="Address...">
+				<input type="number" id="paydu" min=0 max=1>
+			</div>
+			<label for="passw">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw" id="passw" placeholder="Enter Password...">
+			<button id="submit" type="button" class="submbutton">Add person</button> 
 		</div>
 
 	</body>
@@ -39,6 +51,23 @@
 					alert("The password is correct.");
 				}
 			});
+		})
+		$("#submit").click(function(){
+			var attempt = ("CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="+document.getElementById("passw").value);
+			var ln = document.getElementById("lname").value
+			var ad = document.getElementById("addre").value
+			var pa = document.getElementById("paydu").value
+			var dat = {key: attempt, lname: ln, address: ad, pay: pa};
+			$.ajax({
+				type: "POST",
+				url: "/register",
+				data: JSON.stringify({key: attempt, lname: ln, address: ad, pay: pa}),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function(data){
+					alert("Response is: "+data);
+				}
+			})
 		})
 	})
 </script>

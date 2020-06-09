@@ -23,7 +23,7 @@ pa = "the-password"
 cap = 25
 ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
-re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
+reg = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 en = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
 ex = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
 
@@ -42,6 +42,7 @@ class Party(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	lname = db.Column(db.String(60))
 	address = db.Column(db.String(100))
+	pay = db.Column(db.Integer, default=0)
 
 
 @app.route('/')
@@ -60,6 +61,23 @@ def admin():
 @app.route('/see')
 def  see():
 	return str(a)
+
+@app.route('/register', methods=["POST", "GET"])
+def reg():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key') == "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA==the-password"):
+			i = int(b.get('pay'))
+			party = Party(lname=b.get('lname'), address=b.get('address'),pay=i)
+			db.session.add(party)
+			db.session.commit()
+			return "It worked"
+		else:
+			abort(403)
+	else:
+		abort(403)
+
 
 @app.route('/pass1', methods=["POST","GET"])
 def passw1():
@@ -87,8 +105,6 @@ def passw2():
 	else:
 		return "U_R_BAD"
 
-
-@app.route('/pass2', methods=["POST", "GET"])
 #used for debugging when activated(run 'python app.py' to debug)
 if __name__ == '__main__':
 	app.run(host="0.0.0.0", port=80, debug=True)
