@@ -6,14 +6,14 @@
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn pool availablity">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-		<title>Maple Lawn pool availability tracker</title>
+		<title>Maple Lawn pool active member modifyer</title>
 
 	</head>
 
 	<body>
 		<h1>Pool availability administrator</h1>
 		<br />
-		<h2>This site is for lifegaurds of the pool ONLY!!!!</h2>
+		<h2>This site is for Pool administrators only</h2>
 		<br />
 		<div id = "log" style="display: block">
 			<div class="containter">
@@ -23,29 +23,6 @@
 			<button name="login" id="login" type="button" class="submbutton">Login</button>
 		</div>
 		<div id="stuff" style="display: none">
-			<h3>The pool's capacity is {{ cap }} people</h3>
-			<br />
-			<h3 style="color: darkgreen">The pool has {{ c }} people in it</h3>
-			<h3 style="color: red">The pool can have {{ ca }} more people enter</h3>
-			<br />
-			<p>Refresh to update numbers(you will have to re-enter the password)</p>
-			<br />
-			<label for="see"><b>Use this button to see(without refreshing) how many people are in the pool</b></label>
-			<div style="display: block">
-				<button name="see" id="see" class="seeb">See</button>
-			</div>
-			<div style="display: inline">
-					<label for="add"><b>Person goes into the pool</b></label>
-					<button name="add" id="add" class="addbutton">+</button>
-					<label for="sub"><b>Person leaves the pool</b></label>
-					<button name="sub" id="sub" class="subbutton">-</button>
-			</div>
-			<br />
-			<br />
-			<label for="reset"><b>Reset the number of people in the pool</b></label>
-			<div style="display: block">
-				<button name="reset" id="reset" class="resetb">reset</button>
-			</div>
 		</div>
 
 	</body>
@@ -55,32 +32,13 @@
 	$(document).ready(function(){
 		$("#login").click(function(){
 			var attempt = document.getElementById("pass").value;
-			$.post("/pass", attempt, function(data, status){
+			$.post("/pass1", attempt, function(data, status){
 				if(data == "U_R_IN"){
 					document.getElementById("log").style.display =  "none";
 					document.getElementById("stuff").style.display  =  "block";
 					alert("The password is correct.");
 				}
-				else{
-					alert("Incorrect password please try again.");
-				}
 			});
-		})
-		$("#add").click(function(){
-			$.post("/add", "{{ ad }}");
-		})
-		$("#sub").click(function(){
-			$.post("/sub", "{{ su }}");
-		})
-		$("#see").click(function(){
-			$.get("/see", function(data, status){
-				alert("There are "+data+" people at the pool\n"+({{ cap }}-data)+" more people can enter the pool\nThe pools max capacity is "+({{ cap }}));
-			})
-		})
-		$('#reset').click(function(){
-			$.post("/reset", "{{ re }}", function(data, status){
-				alert("The outcome of the reset request: "+status+"\nThe reset value of people in the pool: "+data);
-			})
 		})
 	})
 </script>
