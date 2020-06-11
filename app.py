@@ -56,7 +56,9 @@ def index():
 def admin():
 	global a
 	b = cap-a
-	return render_template('admin.html',)
+	dude = Party.query.filter_by(pay=1).all()
+	dedu = Party.query.filter_by(pay=0).all()
+	return render_template('admin.html', dat=dude, det=dedu)
 
 @app.route('/see')
 def  see():

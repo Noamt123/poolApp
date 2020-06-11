@@ -2,9 +2,10 @@
 
 <html lang="en">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn pool availablity">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 		<title>Maple Lawn pool active member modifyer</title>
 
@@ -86,6 +87,19 @@
 			<label for="passw4">Enter the password so we can  verifyyour identity</label>
 			<input type="password" name="passw4" id="passw4" placeholder="Enter Password...">
 			<button id="submit4" type="button" class="submbutton">Delete Family</button>
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<p align="center">Refresh to update data</p>
+			<h2 align="center">Table with families in the database who can enter the pool</h2>
+			<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>pay</th></tr>{% for item in dat %}<tr><td>{{ item.id }}</td><td>{{ item.lname }}</td><td>{{ item.address }}</td><td>{{ item.pay }}</td></tr>{% endfor %}</table>
+			<br />
+			<br />
+			<br />
+			<h2 align="center">Table with families in the database who can't enter the pool</h2>
+			<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>pay</th></tr>{% for item in det %}<tr><td>{{ item.id }}</td><td>{{ item.lname }}</td><td>{{ item.address }}</td><td>{{ item.pay }}</td></tr>{% endfor %}</table>
 		</div>
 
 	</body>
