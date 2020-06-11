@@ -34,7 +34,46 @@
 			</div>
 			<label for="passw">Enter the password so we can verify your identity</label>
 			<input type="password" name="passw" id="passw" placeholder="Enter Password...">
-			<button id="submit" type="button" class="submbutton">Add person</button> 
+			<button id="submit" type="button" class="submbutton">Add person</button>
+			<br />
+			<br />
+			<br />
+			<h2>Change if family is allowed in the pool</h2>
+			<p>Lastname, address, (value you can change)can they enter the pool(0(no) or 1(yes))</p>
+			<div>
+				<input type="text" id="lname1" placeholder="Last Name...">
+				<input type="text" id="addre1" placeholder="Address...">
+				<input type="number" id="paydu1" min=0 max=1>
+			</div>
+			<label for="passw1">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw1" id="passw1" placeholder="Enter Password...">
+			<button id="submit1" type="button" class="submbutton">Change pay</button>
+			<br />
+			<br />
+			<br />
+			<h2>Change family address</h2>
+			<p>Lastname, address, (value you can change)edited address</p>
+			<div>
+				<input type="text" id="lname2" placeholder="Last Name...">
+				<input type="text" id="addre2" placeholder="Address...">
+				<input type="text" name="naddre" id="naddre" placeholder="New Address...">
+			</div>
+			<label for="passw2">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw2" id="passw2" placeholder="Enter Password...">
+			<button id="submit2"  type="button" class="submbutton">Change address</button>
+			<br />
+			<br />
+			<br />
+			<h2>Change family name</h2>
+			<p>Lastname, address, (value you can change)edited name</p>
+			<div>
+				<input type="text" id="lname3" placeholder="Last Name...">
+				<input type="text" id="addre3" placeholder="Address...">
+				<input type="text" id="nlname" placeholder="New Last Name...">
+			</div>
+			<label for="passw3">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw3" id="passw3" placeholder="Enter Password...">
+			<button id="submit3" type="button" class="submbutton">Change Name</button>
 		</div>
 
 	</body>
@@ -54,18 +93,78 @@
 		})
 		$("#submit").click(function(){
 			var attempt = ("CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="+document.getElementById("passw").value);
-			var ln = document.getElementById("lname").value
-			var ad = document.getElementById("addre").value
-			var pa = document.getElementById("paydu").value
-			var dat = {key: attempt, lname: ln, address: ad, pay: pa};
+			var ln = document.getElementById("lname").value;
+			var ad = document.getElementById("addre").value;
+			var pa = document.getElementById("paydu").value;
 			$.ajax({
 				type: "POST",
 				url: "/register",
 				data: JSON.stringify({key: attempt, lname: ln, address: ad, pay: pa}),
 				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				success: function(data){
-					alert("Response is: "+data);
+				success: function (data, status){
+					if(data == "It worked"){
+						alert("Party successfully added")
+					}
+				}
+			})
+		})
+		$("#submit1").click(function(){
+			var attempt =  ("iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="+document.getElementById("passw1").value);
+			var ln = document.getElementById("lname1").value;
+			var ad = document.getElementById("addre1").value;
+			var pa = document.getElementById("paydu1").value;
+			$.ajax({
+				type: "POST",
+				url: "/cpay",
+				data: JSON.stringify({key: attempt, lname: ln, address: ad, pay: pa}),
+				contentType: "application/json; charset=utf-8",
+				success: function (data, status){
+					if(data == "It worked"){
+						alert("Value successfully changed");
+					}
+					else if(data == "No"){
+						alert("Name and address don't exsist together");
+					}
+				}
+			})
+		})
+		$("#submit2").click(function(){
+			var attempt = ("+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="+document.getElementById("passw2").value);
+			var ln = document.getElementById("lname2").value;
+			var ad = document.getElementById("addre2").value;
+			var nad = document.getElementById("naddre").value;
+			$.ajax({
+				type: "POST",
+				url:  "/caddress",
+				data: JSON.stringify({key: attempt, lname: ln, address: ad, naddress: nad}),
+				contentType: "application/json; charset=utf-8",
+				success: function (data, status){
+					if(data == "It worked"){
+						alert("Value successfully changed");
+					}
+					else if(data ==  "No"){
+						alert("Name and address don't exsist together");
+					}
+				}
+			})
+		})
+		$("#submit3").click(function(){
+			var attempt = ("4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="+document.getElementById("passw3").value);
+			var ln = document.getElementById("lname3").value;
+			var ad = document.getElementById("addre3").value;
+			var nln = document.getElementById("nlname").value;
+			$.ajax({
+				type: "POST",
+				url: "/clname",
+				data: JSON.stringify({key: attempt,  lname: ln, address: ad, nlname: nln}),
+				contentType: "application/json; charset=utf-8",
+				success:  function (data, status){
+					if(data == "It worked"){
+						alert("Value changed successfully");
+					}
+					else if(data == "No"){
+						alert("Name and address don't exsist together")
+					}
 				}
 			})
 		})

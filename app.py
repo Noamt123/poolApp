@@ -21,10 +21,10 @@ db = SQLAlchemy(app)
 a =0
 pa = "the-password"
 cap = 25
-ad = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
-su = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
+cp = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
+cn = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 reg = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
-en = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
+ca = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
 ex = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
 
 peoplein  = "Jesus Christ,Dimitri Blaiddyd"
@@ -72,12 +72,79 @@ def reg():
 			party = Party(lname=b.get('lname'), address=b.get('address'),pay=i)
 			db.session.add(party)
 			db.session.commit()
-			return "It worked"
+			print("it did it")
+			return ("It worked")
 		else:
 			abort(403)
 	else:
 		abort(403)
 
+@app.route('/cpay', methods=["POST", "GET"])
+def cpay():
+	if(request.is_json):
+		b =  request.get_json()
+		print(b)
+		if(b.get('key') ==  "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw==the-password"):
+			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
+			if(bo):
+				i = int(b.get('pay'))
+				print(i)
+				party = Party.query.filter_by(lname=b.get('lname'), address=b.get('address')).first()
+				party.pay = i
+				print("It did it")
+				db.session.commit()
+				return ("It worked")
+			else:
+				print("NO")
+				return ("No")
+		else:
+			abort(403)
+	else:
+		abort(403)
+
+@app.route('/caddress', methods=["POST","GET"])
+def caddress():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key')  ==  "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA==the-password"):
+			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
+			if(bo):
+				party = Party.query.filter_by(lname=b.get('lname'), address=b.get("address")).first()
+				party.address = b.get("naddress")
+				print("It did it")
+				print(party.address)
+				db.session.commit()
+				return("It worked")
+			else:
+				print("NO")
+				return ("No")
+		else:
+			abort(403)
+	else:
+		abort(403)
+
+@app.route('/clname', methods=["POST", "GET"])
+def clname():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key') == "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA==the-password"):
+			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
+			if(bo):
+				party = Party.query.filter_by(lname=b.get('lname'), address=b.get('address')).first()
+				party.lname = b.get("nlname")
+				print("It did it")
+				db.session.commit()
+				return ("It worked")
+			else:
+				print("NO")
+				return ("No")
+		else:
+			abort(403)
+
+	else:
+		abort(403)
 
 @app.route('/pass1', methods=["POST","GET"])
 def passw1():
