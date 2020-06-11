@@ -74,6 +74,18 @@
 			<label for="passw3">Enter the password so we can verify your identity</label>
 			<input type="password" name="passw3" id="passw3" placeholder="Enter Password...">
 			<button id="submit3" type="button" class="submbutton">Change Name</button>
+			<br />
+			<br />
+			<br />
+			<h2>Delete family from database</h2>
+			<p>Lastname, address</p>
+			<div>
+				<input type="text" id="lname4" placeholder="Last Name...">
+				<input type="text" id="addre4" placeholder="Address...">
+			</div>
+			<label for="passw4">Enter the password so we can  verifyyour identity</label>
+			<input type="password" name="passw4" id="passw4" placeholder="Enter Password...">
+			<button id="submit4" type="button" class="submbutton">Delete Family</button>
 		</div>
 
 	</body>
@@ -103,7 +115,10 @@
 				contentType: "application/json; charset=utf-8",
 				success: function (data, status){
 					if(data == "It worked"){
-						alert("Party successfully added")
+						alert("Party successfully added");
+					}
+					else if(data == "No"){
+						alert("Party already exsists");
 					}
 				}
 			})
@@ -161,6 +176,25 @@
 				success:  function (data, status){
 					if(data == "It worked"){
 						alert("Value changed successfully");
+					}
+					else if(data == "No"){
+						alert("Name and address don't exsist together")
+					}
+				}
+			})
+		})
+		$("#submit4").click(function(){
+			var attempt = ("RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="+document.getElementById("passw4").value);
+			var ln = document.getElementById("lname4").value;
+			var ad = document.getElementById("addre4").value;
+			$.ajax({
+				type: "POST",
+				url: "/delt",
+				data: JSON.stringify({key: attempt, lname: ln, address: ad}),
+				contentType: "application/json; charset=utf-8",
+				success: function (data, status){
+					if(data == "It worked"){
+						alert("Family deleted successfully");
 					}
 					else if(data == "No"){
 						alert("Name and address don't exsist together")

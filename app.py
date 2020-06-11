@@ -25,7 +25,7 @@ cp = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 cn = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 reg = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 ca = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
-ex = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
+de = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
 
 peoplein  = "Jesus Christ,Dimitri Blaiddyd"
 
@@ -68,12 +68,16 @@ def reg():
 		b = request.get_json()
 		print(b)
 		if(b.get('key') == "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA==the-password"):
-			i = int(b.get('pay'))
-			party = Party(lname=b.get('lname'), address=b.get('address'),pay=i)
-			db.session.add(party)
-			db.session.commit()
-			print("it did it")
-			return ("It worked")
+			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
+			if(bo == False):
+				i = int(b.get('pay'))
+				party = Party(lname=b.get('lname'), address=b.get('address'),pay=i)
+				db.session.add(party)
+				db.session.commit()
+				print("it did it")
+				return ("It worked")
+			else:
+				return "No"
 		else:
 			abort(403)
 	else:
@@ -143,6 +147,26 @@ def clname():
 		else:
 			abort(403)
 
+	else:
+		abort(403)
+
+@app.route('/delt', methods=["POST", "GET"])
+def delt():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key') == "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw==the-password"):
+			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
+			if(bo):
+				Party.query.filter_by(lname=b.get('lname'), address=b.get('address')).delete()
+				db.session.commit()
+				print("It did  it")
+				return("It worked")
+			else:
+				print("No")
+				return("No")
+		else:
+			abort(403)
 	else:
 		abort(403)
 
