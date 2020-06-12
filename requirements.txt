@@ -7,3 +7,5 @@ Werkzeug==1.0.1
 gunicorn
 Flask-SQLAlchemy
 DateTime
+apscheduler==2.1.2
+flask-crontab

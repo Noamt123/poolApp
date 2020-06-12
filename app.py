@@ -1,3 +1,4 @@
+import atexit
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -6,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from DateTime import DateTime
 from datetime  import datetime
 import os
+from apscheduler.scheduler import Scheduler
 
 app = Flask(__name__)
 
@@ -17,6 +19,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
 
+cron = Scheduler(daemon=True)
+cron.start()
+
+day = datetime.now()
 
 a =0
 pa = "the-password"
@@ -26,8 +32,15 @@ cn = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
 reg = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 ca = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
 de = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
+se = "/kh++rjC2D72yDeLIRDF375yJ6nQZaO/mQ=="
 
 peoplein  = "Jesus Christ,Dimitri Blaiddyd"
+
+@cron.interval_schedule(hours=24)
+def job_function():
+	global day
+	day = datetime.now()
+
 
 class Person(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -48,6 +61,11 @@ class Party(db.Model):
 @app.route('/')
 @app.route('/home')
 def index():
+	A = datetime.now()
+	B = datetime.today()
+	print(A>B)
+	print(B>A)
+	print(day)
 	global a
 	b = cap-a
 	return render_template('index.html',c=a,ca=b, cap=cap)
@@ -59,6 +77,10 @@ def admin():
 	dude = Party.query.filter_by(pay=1).all()
 	dedu = Party.query.filter_by(pay=0).all()
 	return render_template('admin.html', dat=dude, det=dedu)
+
+@app.route("/lifegaurd")
+def life():
+	return render_template('register.html')
 
 @app.route('/see')
 def  see():

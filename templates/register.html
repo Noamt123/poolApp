@@ -2,7 +2,7 @@
 
 <html lang="en">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn pool availablity">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
@@ -11,7 +11,37 @@
 	</head>
 
 	<body>
-		
+		<h1>Pool availability register</h1>
+		<br />
+		<h2>This site is for Pool lifegaurds only</h2>
+		<br />
+		<div id = "log" style="display: block">
+			<div class="containter">
+				<label for="pass"><b>Password</b></label>
+				<input type="password" placeholder="Enter password..." name="pass" id="pass">
+			</div>
+			<button name="login" id="login" type="button" class="submbutton">Login</button>
+		</div>
+		<div id="stuff" style="display: none">
+			<h2>Search for family name</h2>
+		</div>
 	</body>
 
+	<script>
+		$(document).ready(function(){
+			$("#login").click(function(){
+				var attempt = document.getElementById("pass").value;
+				$.post("/pass2", attempt, function(data, status){
+					if(data == "U_R_GOOD"){
+						document.getElementById("log").style.display = "none";
+						document.getElementById("stuff").style.display = "block";
+						alert("The password is correct");
+					}
+					else if(data  = "U_R_BAD"){
+						alert("Incorrect password please try again");
+					}
+				})
+			})
+		})
+	</script>
 </html>
