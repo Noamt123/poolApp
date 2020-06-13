@@ -11,14 +11,14 @@
 
 	</head>
 
-	<body>
-		<h1>Pool availability administrator</h1>
+	<body style="background-color: lightgray;">
+		<h1 style="text-align: center;" style="color: black"><b>Pool Managing System</b></h1>
 		<br />
-		<h2>This site is for Pool administrators only</h2>
+		<h2 style="text-align: center;" style="color: black"><b>For Lifegaurds Only</b></h2>
 		<br />
 		<div id = "log" style="display: block">
 			<div class="containter">
-				<label for="pass"><b>Password</b></label>
+				<label for="pass" style="color: maroon;"><b>Password</b></label>
 				<input type="password" placeholder="Enter password..." name="pass" id="pass">
 			</div>
 			<button name="login" id="login" type="button" class="submbutton">Login</button>
@@ -118,7 +118,15 @@
 			<h2 align="center">Table with families in the database who can't enter the pool</h2>
 			<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>pay</th></tr>{% for item in det %}<tr><td>{{ item.id }}</td><td>{{ item.lname }}</td><td>{{ item.address }}</td><td>{{ item.pay }}</td></tr>{% endfor %}</table>
 		</div>
-
+		<br />
+		<br />
+		<br />
+		<img src="../static/Pictures/absctrl_logo.png" alt="Absolute Control" style="float: left;" width="20%" height="20%">
+		<br />
+		<br />
+		<br />
+		<br />
+		<img src="../static/Pictures/hackground_logo.png" alt="Hackground" style="float: right;" width="20%" height="20%">
 	</body>
 </html>
 

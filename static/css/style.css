@@ -98,12 +98,10 @@ button {
   height: 300px;
 }
 
-
 .subbutton:active {
   transform: translateY(1px);
   filter: saturate(150%);
 }
-
 
 .subbutton:hover {
   color: white;
@@ -111,11 +109,9 @@ button {
   background-color: #000080;
 }
 
-
 .subbutton::-moz-focus-inner {
   border: none;
 }
-
 
 .subbutton:focus {
   outline: none;
