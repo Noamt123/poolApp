@@ -5,6 +5,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn pool availablity">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 		<title>Maple Lawn pool availibility register</title>
 
@@ -26,6 +27,20 @@
 			<br />
 		</div>
 		<div id="stuff" style="display: none">
+			<p>refresh to update data</p>
+			<br />
+			<h3>Pool capacity is:</h3>
+			<h1 style="color: black">{{ cap }}</h1>
+			<br />
+			<br />
+			<h3># of people at the pool:</h3>
+			<h1 style="color: darkgreen">{{ c }}</h1>
+			<br />
+			<h3># of spaces available at the pool:</h3>
+			<h1 style="color: red">{{ ca }}</h1>
+			<br />
+			<br />
+			<br />
 			<h2>Search for family name</h2>
 			<br />
 			<input type="text" id="lname1" placeholder="Last Name...">
@@ -35,6 +50,32 @@
 			<br />
 			<br />
 			<div id="results"></div>
+			<br />
+			<br />
+			<br />
+			<h2>Add people to party</h2>
+			<br />
+			<div>
+				<input type="text" id="lname2" placeholder="Last Name...">
+				<input type="text" id="addre2" placeholder="Address...">
+				<input type="number" id="peoadd" min=0>
+			</div>
+			<label for="passw2">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw2" id="passw2" placeholder="Enter Password...">
+			<button type="button" id="submit2" class="submbutton">Add</button>
+			<br />
+			<br />
+			<br />
+			<h2>Subtract people from party</h2>
+			<br />
+			<div>
+				<input type="text" id="lname3" placeholder="Last Name...">
+				<input type="text" id="addre3" placeholder="Address...">
+				<input type="number" id="peosub" min=0>
+			</div>
+			<label for="passw3">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw3" id="passw3" placeholder="Enter Password...">
+			<button type="button" id="submit3" class="submbutton">Subtract</button>
 		</div>
 	</body>
 
@@ -64,6 +105,52 @@
 					success: function (data, status){
 						$("#results").html(data);
 						alert(status);
+					}
+				})
+			})
+			$("#submit2").click(function(){
+				var attempt = ("{{ ad }}"+document.getElementById("passw2").value);
+				var ln = document.getElementById("lname2").value;
+				var ad = document.getElementById("addre2").value;
+				var peo = document.getElementById("peoadd").value;
+				$.ajax({
+					type: "POST",
+					url: "/add",
+					data: JSON.stringify({ key: attempt, lname: ln, address: ad, people: peo}),
+					contentType: "application/json; charset=utf-8",
+					success: function (data, status){
+						if(data == "It w1"){
+							alert("party successfully registered");
+						}
+						else if(data  ==  "It w2"){
+							alert("people successfully added to party");
+						}
+						else if(data == "No"){
+							alert("No party exsists that is paid with this name and address");
+						}
+					}
+				})
+			})
+			$("#submit3").click(function(){
+				var attempt = ("{{ su }}"+document.getElementById("passw3").value);
+				var ln = document.getElementById("lname3").value;
+				var ad = document.getElementById("addre3").value;
+				var peo = document.getElementById("peosub").value;
+				$.ajax({
+					type: "POST",
+					url: "/sub",
+					data: JSON.stringify({key: attempt, lname: ln, address: ad, people: peo}),
+					contentType: "application/json; charset=utf-8",
+					success: function (data, status){
+						if(data == "It w"){
+							alert("people subracted successfully");
+						}
+						else if(data == "tm"){
+							alert("Can't subtract more people than are registerd at the pool")
+						}
+						else if(data == "No"){
+							alert("People not registered at the pool")
+						}
 					}
 				})
 			})
