@@ -90,6 +90,23 @@
 			<br />
 			<br />
 			<br />
+			<h2>Search for when family was at the pool</h2>
+			<p>Lastname, address</p>
+			<div>
+				<input type="text" id="lname5" placeholder="Last Name...">
+				<input type="text" id="addre5" placeholder="Address...">
+			</div>
+			<label for="passw5">Enter the password so we can verify your identity</label>
+			<input type="password" name="passw5" id="passw5" placeholder="Enter Password...">
+			<button type="button" id="submit5" class="submbutton">Search Family</button>
+			<br />
+			<br />
+			<h3 align="center">family and families that were at the pool when the family was there</h3>
+			<br />
+			<div id="results"></div>
+			<br />
+			<br />
+			<br />
 			<br />
 			<br />
 			<p align="center">Refresh to update data</p>
@@ -212,6 +229,26 @@
 					}
 					else if(data == "No"){
 						alert("Name and address don't exsist together")
+					}
+				}
+			})
+		})
+		$("#submit5").click(function(){
+			var attempt = ("{{ iv }}"+document.getElementById("passw5").value);
+			var ln = document.getElementById("lname5").value;
+			var ad = document.getElementById("addre5").value;
+			$.ajax({
+				type: "POST",
+				url: "/invest",
+				data: JSON.stringify({key: attempt, lname: ln, address: ad}),
+				contentType: "application/json; charset=utf-8",
+				success: function (data, status){
+					if( data=="No"){
+						alert("Person never went to the pool");
+					}
+					else{
+						$("#results").html(data);
+						alert("It worked");
 					}
 				}
 			})

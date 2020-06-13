@@ -8,6 +8,8 @@ from DateTime import DateTime
 from datetime  import datetime
 import os
 from apscheduler.scheduler import Scheduler
+from sqlalchemy import and_
+
 
 app = Flask(__name__)
 
@@ -36,11 +38,27 @@ de = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
 se = "/kh++rjC2D72yDeLIRDF375yJ6nQZaO/mQ=="
 ad = "NNsXq7wEuLvrt0mG3b6KqdMx0/3ZwfVolw=="
 su = "zAH2XnWb6HzhgngMGYYxaIpGI36L3LHyCQ=="
+iv = "ftlvJ28iSlSq7FsZfdi9Hy0amTYk2a+jnQ=="
 
 @cron.interval_schedule(hours=24)
 def job_function():
 	global day
+	global a
 	day = datetime.now()
+	dat = Person.query.filter(Person.peopleat >= 1).all()
+	for I in dat:
+		I.peopleat = 0
+	a = 0
+	db.session.commit()
+
+@cron.interval_schedule(hours=1)
+def check():
+	global a
+	a = 0
+	dat = Person.query.filter(Person.peopleat >= 1).all()
+	for I in dat:
+		a += I.peopleat
+	print(str(a)+" Now")
 
 
 class Person(db.Model):
@@ -77,7 +95,7 @@ def admin():
 	b = cap-a
 	dude = Party.query.filter_by(pay=1).all()
 	dedu = Party.query.filter_by(pay=0).all()
-	return render_template('admin.html', dat=dude, det=dedu,cp=cp,cn=cn,re=re,ca=ca,de=de)
+	return render_template('admin.html', dat=dude, det=dedu,cp=cp,cn=cn,re=re,ca=ca,de=de,iv=iv)
 
 @app.route("/lifegaurd")
 def life():
@@ -106,6 +124,32 @@ def search():
 	else:
 		abort(403)
 
+@app.route("/invest", methods=["POST", "GET"])
+def invest():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key') == (iv+pa)):
+			bo1 = bool(Person.query.filter_by(lname=b.get('lname'),address=b.get("address")).first())
+			if(bo1):
+				dats = Person.query.filter_by(lname=b.get('lname'), address=b.get("address")).all()
+				table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>peoplemax</th><th>enter time</th><th>leave time</th></tr>'
+				for Q in dats:
+					table += ('<tr><td>'+str(Q.id)+'</td><td>'+Q.lname+'</td><td>'+Q.address+'</td><td>'+str(Q.peoplemax)+'</td><td>'+str(Q.enter_time)+'</td><td>'+str(Q.leave_time)+'</td></tr>')
+					datas = Person.query.filter(and_(Person.enter_time < Q.leave_time, Person.enter_time >  Q.enter_time.day)).all()
+					for W in datas:
+						table += ('<tr><td>'+str(W.id)+'</td><td>'+W.lname+'</td><td>'+W.address+'</td><td>'+str(W.peoplemax)+'</td><td>'+str(W.enter_time)+'</td><td>'+str(W.leave_time)+'</td></tr>')
+				table += "</table>"
+				print(table)
+				return table
+			else:
+				return("No")
+		else:
+			abort(403)
+	else:
+		abort(403)
+
+
 @app.route('/add', methods=["POST", "GET"])
 def add():
 	if(request.is_json):
@@ -115,25 +159,28 @@ def add():
 			global a
 			bo1 = bool(Party.query.filter_by(lname=b.get('lname'), address=b.get("address"),pay=1).first())
 			if(bo1):
-				bo2 = bool(Person.query.filter(Person.lname==b.get('lname'), Person.address==b.get("address"), Person.peopleat >= 1).first())
-				if(bo2):
-					i = int(b.get("people"))
-					person2 = Person.query.filter(Person.lname==b.get('lname'),Person.address==b.get('address'),Person.peopleat>=1).first()
-					person2.peopleat += i
-					if(person2.peopleat > person2.peoplemax):
-						person2.peoplemax = person2.peopleat
-					db.session.commit()
-					print("It did it also")
-					a += i
-					return("It w2")
+				i = int(b.get("people"))
+				if(a+i  <= cap):
+					bo2 = bool(Person.query.filter(Person.lname==b.get('lname'), Person.address==b.get("address"), Person.peopleat >= 1).first())
+					if(bo2):
+						person2 = Person.query.filter(Person.lname==b.get('lname'),Person.address==b.get('address'),Person.peopleat>=1).first()
+						person2.peopleat += i
+						if(person2.peopleat > person2.peoplemax):
+							person2.peoplemax = person2.peopleat
+						db.session.commit()
+						print("It did it also")
+						a += i
+						return("It w2")
+					else:
+						i = int(b.get("people"))
+						person1 = Person(lname=b.get('lname'), address=b.get('address'),peopleat=i,peoplemax=i,enter_time=datetime.now())
+						db.session.add(person1)
+						db.session.commit()
+						print("It did it")
+						a += i
+						return("It w1")
 				else:
-					i = int(b.get("people"))
-					person1 = Person(lname=b.get('lname'), address=b.get('address'),peopleat=i,peoplemax=i,enter_time=datetime.now())
-					db.session.add(person1)
-					db.session.commit()
-					print("It did it")
-					a += i
-					return("It w1")
+					return("wtm")
 			else:
 				return("No")
 		else:
