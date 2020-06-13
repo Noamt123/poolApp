@@ -21,9 +21,20 @@
 				<input type="password" placeholder="Enter password..." name="pass" id="pass">
 			</div>
 			<button name="login" id="login" type="button" class="submbutton">Login</button>
+			<br />
+			<br />
+			<br />
 		</div>
 		<div id="stuff" style="display: none">
 			<h2>Search for family name</h2>
+			<br />
+			<input type="text" id="lname1" placeholder="Last Name...">
+			<label for="passw1">Enter the password so we can verify your idenity</label>
+			<input type="password" id="passw1" name="passw1" placeholder="Enter Password...">
+			<button type="button" id="submit1" class="submbutton">Search</button>
+			<br />
+			<br />
+			<div id="results"></div>
 		</div>
 	</body>
 
@@ -39,6 +50,20 @@
 					}
 					else if(data  = "U_R_BAD"){
 						alert("Incorrect password please try again");
+					}
+				})
+			})
+			$("#submit1").click(function(){
+				var attempt = ("{{ se }}"+document.getElementById("passw1").value);
+				var ln = document.getElementById("lname1").value;
+				$.ajax({
+					type: "POST",
+					url: "/search",
+					data: JSON.stringify({ key: attempt, lname: ln }),
+					contentType: "application/json; charset=utf-8",
+					success: function (data, status){
+						$("#results").html(data);
+						alert(status);
 					}
 				})
 			})

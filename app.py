@@ -29,7 +29,7 @@ pa = "the-password"
 cap = 25
 cp = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
 cn = "4kr6XeFX3aZjvv1aCKKhWW4bvcPGULmgHA=="
-reg = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
+re = "CuRUkhogic7YvKv0ak6oAJaH1g7uY8z2gA=="
 ca = "+saF6NWKEgyrqRt02gol/k2nagxeWhLQkA=="
 de = "RfZDtKHDFntlZz3MmAnIJPGtAdYIqhZQCw=="
 se = "/kh++rjC2D72yDeLIRDF375yJ6nQZaO/mQ=="
@@ -68,7 +68,7 @@ def index():
 	print(day)
 	global a
 	b = cap-a
-	return render_template('index.html',c=a,ca=b, cap=cap)
+	return render_template('index.html',c=a,ca=b, cap=cap,se=se)
 
 @app.route('/admin')
 def admin():
@@ -76,11 +76,33 @@ def admin():
 	b = cap-a
 	dude = Party.query.filter_by(pay=1).all()
 	dedu = Party.query.filter_by(pay=0).all()
-	return render_template('admin.html', dat=dude, det=dedu)
+	return render_template('admin.html', dat=dude, det=dedu,cp=cp,cn=cn,re=re,ca=ca,de=de)
 
 @app.route("/lifegaurd")
 def life():
-	return render_template('register.html')
+	return render_template('register.html', se=se)
+
+@app.route('/search', methods=["POST","GET"])
+def search():
+	if(request.is_json):
+		b = request.get_json()
+		print(b)
+		if(b.get('key') == "/kh++rjC2D72yDeLIRDF375yJ6nQZaO/mQ==a-password"):
+			bo1 = bool(Party.query.filter_by(lname=b.get('lname'),pay=1).first())
+			if(bo1):
+				dude = Party.query.filter_by(lname=b.get('lname'),pay=1).all()
+				table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>pay</th></tr>'
+				for c in dude:
+					table += ('<tr><td>'+str(c.id)+'</td><td>'+c.lname+'</td><td>'+c.address+'</td><td>'+str(c.pay)+'</td></tr>')
+				table += '</table>'
+				print(table)
+				return table
+			else:
+				return "No"
+		else:
+			abort(403)
+	else:
+		abort(403)
 
 @app.route('/see')
 def  see():
