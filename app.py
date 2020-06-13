@@ -133,16 +133,20 @@ def invest():
 		if(b.get('key') == (iv+pa)):
 			bo1 = bool(Person.query.filter_by(lname=b.get('lname'),address=b.get("address")).first())
 			if(bo1):
-				dats = Person.query.filter_by(lname=b.get('lname'), address=b.get("address")).all()
-				table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>peoplemax</th><th>enter time</th><th>leave time</th></tr>'
-				for Q in dats:
-					table += ('<tr><td>'+str(Q.id)+'</td><td>'+Q.lname+'</td><td>'+Q.address+'</td><td>'+str(Q.peoplemax)+'</td><td>'+str(Q.enter_time)+'</td><td>'+str(Q.leave_time)+'</td></tr>')
-					datas = Person.query.filter(and_(Person.enter_time < Q.leave_time, Person.enter_time >  Q.enter_time.day)).all()
-					for W in datas:
-						table += ('<tr><td>'+str(W.id)+'</td><td>'+W.lname+'</td><td>'+W.address+'</td><td>'+str(W.peoplemax)+'</td><td>'+str(W.enter_time)+'</td><td>'+str(W.leave_time)+'</td></tr>')
-				table += "</table>"
-				print(table)
-				return table
+				bo2 = bool(Person.query.filter(Person.lname==b.get('lname'),Person.address==b.get("address"),Person.peopleat >= 1).first())
+				if(bo2):
+					return "leb"
+				else:
+					dats = Person.query.filter_by(lname=b.get('lname'), address=b.get("address")).all()
+					table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>peoplemax</th><th>enter time</th><th>leave time</th></tr>'
+					for Q in dats:
+						table += ('<tr><td>'+str(Q.id)+'</td><td>'+Q.lname+'</td><td>'+Q.address+'</td><td>'+str(Q.peoplemax)+'</td><td>'+str(Q.enter_time)+'</td><td>'+str(Q.leave_time)+'</td></tr>')
+						datas = Person.query.filter(Person.leave_time > Q.enter_time).filter(Person.enter_time < Q.leave_time).filter(Person.enter_time >  Q.enter_time.day).all()
+						for W in datas:
+							table += ('<tr><td>'+str(W.id)+'</td><td>'+W.lname+'</td><td>'+W.address+'</td><td>'+str(W.peoplemax)+'</td><td>'+str(W.enter_time)+'</td><td>'+str(W.leave_time)+'</td></tr>')
+					table += "</table>"
+					print(table)
+					return table
 			else:
 				return("No")
 		else:
