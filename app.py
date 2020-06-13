@@ -100,7 +100,8 @@ def admin():
 @app.route("/lifegaurd")
 def life():
 	b = cap-a
-	return render_template('register.html', se=se, ad=ad, su=su,c=a,ca=b,cap=cap)
+	dude = Person.query.filter(Person.peopleat >= 1).all()
+	return render_template('register.html', se=se, ad=ad, su=su,c=a,ca=b,cap=cap,dat=dude)
 
 @app.route('/search', methods=["POST","GET"])
 def search():
