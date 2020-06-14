@@ -51,7 +51,7 @@ def job_function():
 	a = 0
 	db.session.commit()
 
-@cron.interval_schedule(hours=1)
+@cron.interval_schedule(minutes=1)
 def check():
 	global a
 	a = 0
