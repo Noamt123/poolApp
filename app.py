@@ -97,7 +97,7 @@ def admin():
 	dedu = Party.query.filter_by(pay=0).all()
 	return render_template('admin.html', dat=dude, det=dedu,cp=cp,cn=cn,re=re,ca=ca,de=de,iv=iv)
 
-@app.route("/lifegaurd")
+@app.route("/lifeguard")
 def life():
 	b = cap-a
 	dude = Person.query.filter(Person.peopleat >= 1).all()
@@ -351,7 +351,7 @@ def passw2():
 	request.get_data(as_text=True)
 	b = request.data
 	bp = str(b, 'utf-8')
-	print("Lifegaurd attempted login with: ", bp)
+	print("Lifeguard attempted login with: ", bp)
 	if(bp == pa2):
 		print("Admin logged in")
 		return "U_R_GOOD"
