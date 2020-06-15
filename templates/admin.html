@@ -4,24 +4,27 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<head>
-		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn pool availablity">
+		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn Pool Availablity">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
-		<title>Maple Lawn pool active member modifyer</title>
+		<title>Maple Lawn Pool Managing System</title>
 
 	</head>
 
 	<body style="background-color: lightgray;">
-		<h1 style="text-align: center;" style="color: black"><b>Pool Managing System</b></h1>
+		<h1 style="text-align: center;" style="color: black"><b>Maple Lawn Pool Managing System</b></h1>
 		<br />
-		<h2 style="text-align: center;" style="color: black"><b>For Lifegaurds Only</b></h2>
+		<h2 style="text-align: center;" style="color: black"><b>For Pool Administrators Only</b></h2>
+		<br />
+		<br />
+		<br />
 		<br />
 		<div id = "log" style="display: block">
-			<div class="containter">
+			<div class="containter" style="text-align:center;">
 				<label for="pass" style="color: maroon;"><b>Password</b></label>
 				<input type="password" placeholder="Enter password..." name="pass" id="pass">
+				<button name="login" id="login" type="button" class="submbutton">Login</button>
 			</div>
-			<button name="login" id="login" type="button" class="submbutton">Login</button>
 		</div>
 		<div id="stuff" style="display: none">
 			<h2>Enter family into pool database</h2>
