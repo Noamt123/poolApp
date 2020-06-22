@@ -3,6 +3,9 @@
 <html lang="en">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn Pool Availablity">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -93,6 +96,10 @@
 
 	<script>
 		$(document).ready(function(){
+			$("#passw1").autocomplete({
+				source: [getCookie("pass_for_search")],
+				minLength: 0
+			});
 			$("#login").click(function(){
 				var attempt = document.getElementById("pass").value;
 				$.post("/pass2", attempt, function(data, status){
@@ -116,10 +123,11 @@
 					contentType: "application/json; charset=utf-8",
 					success: function (data, status){
 						$("#results").html(data);
-						alert(status);
+						alert(status+"(if table shows results other than no we have remembered your password)");
 					}
 				})
 			})
+
 			$("#submit2").click(function(){
 				var attempt = ("{{ ad }}"+document.getElementById("passw2").value);
 				var ln = document.getElementById("lname2").value;
@@ -169,6 +177,18 @@
 					}
 				})
 			})
+			function getCookie(name) {
+				var arr = document.cookie.split(";");
+
+				for(var a = 0; a < arr.length;a++){
+					var par = arr[a].split("=");
+
+					if(name == par[0].trim()){
+						return decodeURIComponent(par[1]);
+					}
+				}
+				return "hi";
+			}
 		})
 	</script>
 </html>

@@ -3,6 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import abort
+from flask import make_response
 from flask_sqlalchemy import SQLAlchemy
 from DateTime import DateTime
 from datetime  import datetime
@@ -116,8 +117,10 @@ def search():
 				for c in dude:
 					table += ('<tr><td>'+str(c.id)+'</td><td>'+c.lname+'</td><td>'+c.address+'</td><td>'+str(c.pay)+'</td></tr>')
 				table += '</table>'
+				res = make_response(table)
+				res.set_cookie('pass_for_search', pa2)
 				print(table)
-				return table
+				return res
 			else:
 				return "No"
 		else:
