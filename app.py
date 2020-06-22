@@ -28,7 +28,7 @@ cron.start()
 day = datetime.now()
 
 a =0
-pa = "the-password"
+pa1 = "the-password"
 pa2="a-password"
 cap = 25
 cp = "iRWOJRnHZDlIsCm63EbJfwkXJkhngbitJw=="
@@ -52,7 +52,7 @@ def job_function():
 	a = 0
 	db.session.commit()
 
-@cron.interval_schedule(minutes=1)
+@cron.interval_schedule(seconds=5)
 def check():
 	global a
 	a = 0
@@ -102,7 +102,8 @@ def admin():
 def life():
 	b = cap-a
 	dude = Person.query.filter(Person.peopleat >= 1).all()
-	return render_template('register.html', se=se, ad=ad, su=su,c=a,ca=b,cap=cap,dat=dude)
+	peps = Party.query.filter_by(pay=1).all()
+	return render_template('register.html', se=se, ad=ad, su=su,c=a,ca=b,cap=cap,dat=dude,pep=peps)
 
 @app.route('/search', methods=["POST","GET"])
 def search():
@@ -112,13 +113,18 @@ def search():
 		if(b.get('key') == (se+pa2)):
 			bo1 = bool(Party.query.filter_by(lname=b.get('lname'),pay=1).first())
 			if(bo1):
+				addr = ""
 				dude = Party.query.filter_by(lname=b.get('lname'),pay=1).all()
 				table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>pay</th></tr>'
 				for c in dude:
 					table += ('<tr><td>'+str(c.id)+'</td><td>'+c.lname+'</td><td>'+c.address+'</td><td>'+str(c.pay)+'</td></tr>')
+					addr += (c.address+",")
+				addr = addr[:-1]
 				table += '</table>'
 				res = make_response(table)
 				res.set_cookie('pass_for_search', pa2)
+				res.set_cookie("addresses", addr)
+				res.set_cookie("lnames", b.get('lname'))
 				print(table)
 				return res
 			else:
@@ -133,7 +139,7 @@ def invest():
 	if(request.is_json):
 		b = request.get_json()
 		print(b)
-		if(b.get('key') == (iv+pa)):
+		if(b.get('key') == (iv+pa1)):
 			bo1 = bool(Person.query.filter_by(lname=b.get('lname'),address=b.get("address")).first())
 			if(bo1):
 				bo2 = bool(Person.query.filter(Person.lname==b.get('lname'),Person.address==b.get("address"),Person.peopleat >= 1).first())
@@ -141,15 +147,17 @@ def invest():
 					return "leb"
 				else:
 					dats = Person.query.filter_by(lname=b.get('lname'), address=b.get("address")).all()
-					table = '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>peoplemax</th><th>enter time</th><th>leave time</th></tr>'
+					table = ""
 					for Q in dats:
-						table += ('<tr><td>'+str(Q.id)+'</td><td>'+Q.lname+'</td><td>'+Q.address+'</td><td>'+str(Q.peoplemax)+'</td><td>'+str(Q.enter_time)+'</td><td>'+str(Q.leave_time)+'</td></tr>')
+						table += '<table class="table table-bordered table-striped"><tr><th>id</th><th>Last Name</th><th>address</th><th>peoplemax</th><th>enter time</th><th>leave time</th></tr>'
 						datas = Person.query.filter(Person.leave_time > Q.enter_time).filter(Person.enter_time < Q.leave_time).filter(Person.enter_time >  Q.enter_time.day).all()
 						for W in datas:
 							table += ('<tr><td>'+str(W.id)+'</td><td>'+W.lname+'</td><td>'+W.address+'</td><td>'+str(W.peoplemax)+'</td><td>'+str(W.enter_time)+'</td><td>'+str(W.leave_time)+'</td></tr>')
-					table += "</table>"
+						table += "</table><br />"
 					print(table)
-					return table
+					res = make_response(table)
+					res.set_cookie("pass_for_invest", pa1)
+					return res
 			else:
 				return("No")
 		else:
@@ -178,7 +186,9 @@ def add():
 						db.session.commit()
 						print("It did it also")
 						a += i
-						return("It w2")
+						res =  make_response("It w2")
+						res.set_cookie("pass_for_add", pa2)
+						return res
 					else:
 						i = int(b.get("people"))
 						person1 = Person(lname=b.get('lname'), address=b.get('address'),peopleat=i,peoplemax=i,enter_time=datetime.now())
@@ -186,7 +196,9 @@ def add():
 						db.session.commit()
 						print("It did it")
 						a += i
-						return("It w1")
+						res = make_response("It w1")
+						res.set_cookie("pass_for_add", pa2)
+						return res
 				else:
 					return("wtm")
 			else:
@@ -213,7 +225,9 @@ def sub():
 						person.leave_time = datetime.now()
 					db.session.commit()
 					a -= i
-					return("It w")
+					res = make_response("It w")
+					res.set_cookie("pass_for_sub", pa2)
+					return res
 				else:
 					return ("tm")
 			else:
@@ -232,7 +246,7 @@ def reg():
 	if(request.is_json):
 		b = request.get_json()
 		print(b)
-		if(b.get('key') == (re+pa)):
+		if(b.get('key') == (re+pa1)):
 			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
 			if(bo == False):
 				i = int(b.get('pay'))
@@ -240,7 +254,9 @@ def reg():
 				db.session.add(party)
 				db.session.commit()
 				print("it did it")
-				return ("It worked")
+				res = make_response("It worked")
+				res.set_cookie("pass_for_register", pa1)
+				return res
 			else:
 				return "No"
 		else:
@@ -253,7 +269,7 @@ def cpay():
 	if(request.is_json):
 		b =  request.get_json()
 		print(b)
-		if(b.get('key') ==  (cp+pa)):
+		if(b.get('key') ==  (cp+pa1)):
 			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
 			if(bo):
 				i = int(b.get('pay'))
@@ -262,7 +278,9 @@ def cpay():
 				party.pay = i
 				print("It did it")
 				db.session.commit()
-				return ("It worked")
+				res = make_response("It worked")
+				res.set_cookie("pass_for_pay", pa1)
+				return res
 			else:
 				print("NO")
 				return ("No")
@@ -276,7 +294,7 @@ def caddress():
 	if(request.is_json):
 		b = request.get_json()
 		print(b)
-		if(b.get('key')  ==  (ca+pa)):
+		if(b.get('key')  ==  (ca+pa1)):
 			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
 			if(bo):
 				party = Party.query.filter_by(lname=b.get('lname'), address=b.get("address")).first()
@@ -284,7 +302,9 @@ def caddress():
 				print("It did it")
 				print(party.address)
 				db.session.commit()
-				return("It worked")
+				res = make_response("It worked")
+				res.set_cookie("pass_for_address", pa1)
+				return res
 			else:
 				print("NO")
 				return ("No")
@@ -298,14 +318,16 @@ def clname():
 	if(request.is_json):
 		b = request.get_json()
 		print(b)
-		if(b.get('key') == (cn+pa)):
+		if(b.get('key') == (cn+pa1)):
 			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
 			if(bo):
 				party = Party.query.filter_by(lname=b.get('lname'), address=b.get('address')).first()
 				party.lname = b.get("nlname")
 				print("It did it")
 				db.session.commit()
-				return ("It worked")
+				res = make_response("It worked")
+				res.set_cookie("pass_for_lastname", pa1)
+				return res
 			else:
 				print("NO")
 				return ("No")
@@ -320,13 +342,15 @@ def delt():
 	if(request.is_json):
 		b = request.get_json()
 		print(b)
-		if(b.get('key') == (de+pa)):
+		if(b.get('key') == (de+pa1)):
 			bo = bool(Party.query.filter_by(lname=b.get('lname'),address=b.get('address')).first())
 			if(bo):
 				Party.query.filter_by(lname=b.get('lname'), address=b.get('address')).delete()
 				db.session.commit()
 				print("It did  it")
-				return("It worked")
+				res= make_response("It worked")
+				res.set_cookie("pass_for_delete", pa1)
+				return res
 			else:
 				print("No")
 				return("No")
@@ -342,9 +366,11 @@ def passw1():
 	b = request.data
 	bp = str(b, 'utf-8')
 	print("Administrator attempted login with: ",bp)
-	if(bp == pa):
+	if(bp == pa1):
 		print("Admin logged in")
-		return "U_R_IN"
+		res = make_response("U_R_IN")
+		res.set_cookie("pass1", pa1)
+		return res
 	else:
 		abort(403)
 
@@ -357,7 +383,9 @@ def passw2():
 	print("Lifeguard attempted login with: ", bp)
 	if(bp == pa2):
 		print("Admin logged in")
-		return "U_R_GOOD"
+		res = make_response("U_R_GOOD")
+		res.set_cookie("pass2", pa2)
+		return res
 	else:
 		return "U_R_BAD"
 

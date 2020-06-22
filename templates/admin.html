@@ -3,6 +3,9 @@
 <html lang="en">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<head>
 		<meta charset="utf-8" name="FRC team 5945" content="Maple Lawn Pool Availablity">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
@@ -134,6 +137,75 @@
 
 <script>
 	$(document).ready(function(){
+		$("#pass").autocomplete({
+			source: [getCookie('pass1')],
+			minLength: 0
+		})
+		$("#passw").autocomplete({
+			source: [getCookie('pass_for_register')],
+			minLength: 0
+		})
+		$("#passw1").autocomplete({
+			source: [getCookie('pass_for_pay')],
+			minLength: 0
+		})
+		$("#passw2").autocomplete({
+			source: [getCookie('pass_for_address')],
+			minLength: 0
+		})
+		$("#passw3").autocomplete({
+			source: [getCookie('pass_for_lastname')],
+			minLength: 0
+		})
+		$("#passw4").autocomplete({
+			source: [getCookie('pass_for_delete')],
+			minLength: 0
+		})
+		$("#passw5").autocomplete({
+			source: [getCookie('pass_for_invest')],
+			minLength: 0
+		})
+		$('#lname1').autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.lname }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.lname }}"{% endfor %}],
+			minLength: 1
+		})
+		$("#addre1").autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.address }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.address }}"{% endfor %}],
+			minLength: 1
+		})
+		$('#lname2').autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.lname }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.lname }}"{% endfor %}],
+			minLength: 1
+		})
+		$("#addre2").autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.address }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.address }}"{% endfor %}],
+			minLength: 1
+		})
+		$('#lname3').autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.lname }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.lname }}"{% endfor %}],
+			minLength: 1
+		})
+		$("#addre3").autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.address }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.address }}"{% endfor %}],
+			minLength: 1
+		})
+		$('#lname4').autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.lname }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.lname }}"{% endfor %}],
+			minLength: 1
+		})
+		$("#addre4").autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.address }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.address }}"{% endfor %}],
+			minLength: 1
+		})
+		$('#lname5').autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.lname }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.lname }}"{% endfor %}],
+			minLength: 1
+		})
+		$("#addre5").autocomplete({
+			source: ["~"{% for thing1 in det %},"{{ thing1.address }}"{% endfor %}{% for thing2 in dat %},"{{ thing2.address }}"{% endfor %}],
+			minLength: 1
+		})
+
 		$("#login").click(function(){
 			var attempt = document.getElementById("pass").value;
 			$.post("/pass1", attempt, function(data, status){
@@ -146,8 +218,8 @@
 		})
 		$("#submit").click(function(){
 			var attempt = ("{{ re }}"+document.getElementById("passw").value);
-			var ln = document.getElementById("lname").value;
-			var ad = document.getElementById("addre").value;
+			var ln = document.getElementById("lname").value.trim();
+			var ad = document.getElementById("addre").value.trim();
 			var pa = document.getElementById("paydu").value;
 			$.ajax({
 				type: "POST",
@@ -166,8 +238,8 @@
 		})
 		$("#submit1").click(function(){
 			var attempt =  ("{{ cp }}"+document.getElementById("passw1").value);
-			var ln = document.getElementById("lname1").value;
-			var ad = document.getElementById("addre1").value;
+			var ln = document.getElementById("lname1").value.trim();
+			var ad = document.getElementById("addre1").value.trim();
 			var pa = document.getElementById("paydu1").value;
 			$.ajax({
 				type: "POST",
@@ -186,9 +258,9 @@
 		})
 		$("#submit2").click(function(){
 			var attempt = ("{{ ca }}"+document.getElementById("passw2").value);
-			var ln = document.getElementById("lname2").value;
-			var ad = document.getElementById("addre2").value;
-			var nad = document.getElementById("naddre").value;
+			var ln = document.getElementById("lname2").value.trim();
+			var ad = document.getElementById("addre2").value.trim();
+			var nad = document.getElementById("naddre").value.trim();
 			$.ajax({
 				type: "POST",
 				url:  "/caddress",
@@ -206,9 +278,9 @@
 		})
 		$("#submit3").click(function(){
 			var attempt = ("{{ cn }}"+document.getElementById("passw3").value);
-			var ln = document.getElementById("lname3").value;
-			var ad = document.getElementById("addre3").value;
-			var nln = document.getElementById("nlname").value;
+			var ln = document.getElementById("lname3").value.trim();
+			var ad = document.getElementById("addre3").value.trim();
+			var nln = document.getElementById("nlname").value.trim();
 			$.ajax({
 				type: "POST",
 				url: "/clname",
@@ -226,8 +298,8 @@
 		})
 		$("#submit4").click(function(){
 			var attempt = ("{{ de }}"+document.getElementById("passw4").value);
-			var ln = document.getElementById("lname4").value;
-			var ad = document.getElementById("addre4").value;
+			var ln = document.getElementById("lname4").value.trim();
+			var ad = document.getElementById("addre4").value.trim();
 			$.ajax({
 				type: "POST",
 				url: "/delt",
@@ -245,8 +317,8 @@
 		})
 		$("#submit5").click(function(){
 			var attempt = ("{{ iv }}"+document.getElementById("passw5").value);
-			var ln = document.getElementById("lname5").value;
-			var ad = document.getElementById("addre5").value;
+			var ln = document.getElementById("lname5").value.trim();
+			var ad = document.getElementById("addre5").value.trim();
 			$.ajax({
 				type: "POST",
 				url: "/invest",
@@ -266,5 +338,17 @@
 				}
 			})
 		})
+		function getCookie(name) {
+			var arr = document.cookie.split(";");
+			for(var a = 0; a < arr.length;a++){
+				var par = arr[a].split("=");
+
+				if(name == par[0].trim()){
+					return decodeURIComponent(par[1]);
+				}
+			}
+			return "hi";
+		}
+
 	})
 </script>

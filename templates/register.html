@@ -96,10 +96,43 @@
 
 	<script>
 		$(document).ready(function(){
+			$("#pass").autocomplete({
+				source: [getCookie("pass2")],
+				minLength: 0
+			})
 			$("#passw1").autocomplete({
 				source: [getCookie("pass_for_search")],
 				minLength: 0
 			});
+			$("#passw2").autocomplete({
+				source: [getCookie("pass_for_add")],
+				minLength: 0
+			})
+			$("#passw3").autocomplete({
+				source: [getCookie("pass_for_sub")],
+				minLength: 0
+			})
+			$("#lname1").autocomplete({
+				source: ["~"{% for item in pep %},"{{ item.lname }}"{% endfor %}],
+				minLength: 1
+			})
+			$("#lname2").autocomplete({
+				source: ["~"{% for item in pep %},"{{ item.lname }}"{% endfor %}],
+				minLength: 1
+			})
+			$("#addre2").autocomplete({
+				source: ["~"{% for item in pep %},"{{ item.address }}"{% endfor %}],
+				minLength: 1
+			})
+			$("#lname3").autocomplete({
+				source: ["~"{% for item in pep %},"{{ item.lname }}"{% endfor %}],
+				minLength: 1
+			})
+			$("#addre3").autocomplete({
+				source: ["~"{% for item in pep %},"{{ item.address }}"{% endfor %}],
+				minLength: 1
+			})
+
 			$("#login").click(function(){
 				var attempt = document.getElementById("pass").value;
 				$.post("/pass2", attempt, function(data, status){
@@ -115,7 +148,7 @@
 			})
 			$("#submit1").click(function(){
 				var attempt = ("{{ se }}"+document.getElementById("passw1").value);
-				var ln = document.getElementById("lname1").value;
+				var ln = document.getElementById("lname1").value.trim();
 				$.ajax({
 					type: "POST",
 					url: "/search",
@@ -130,8 +163,8 @@
 
 			$("#submit2").click(function(){
 				var attempt = ("{{ ad }}"+document.getElementById("passw2").value);
-				var ln = document.getElementById("lname2").value;
-				var ad = document.getElementById("addre2").value;
+				var ln = document.getElementById("lname2").value.trim();
+				var ad = document.getElementById("addre2").value.trim();
 				var peo = document.getElementById("peoadd").value;
 				$.ajax({
 					type: "POST",
@@ -156,8 +189,8 @@
 			})
 			$("#submit3").click(function(){
 				var attempt = ("{{ su }}"+document.getElementById("passw3").value);
-				var ln = document.getElementById("lname3").value;
-				var ad = document.getElementById("addre3").value;
+				var ln = document.getElementById("lname3").value.trim();
+				var ad = document.getElementById("addre3").value.trim();
 				var peo = document.getElementById("peosub").value;
 				$.ajax({
 					type: "POST",
@@ -188,6 +221,17 @@
 					}
 				}
 				return "hi";
+			}
+			function getCookies(name){
+				var arr = document.cookie.split(";");
+
+				for(var a = 0; a < arr.length;a++){
+					var par = arr[a].split("=");
+
+					if(name == par[0].trim()){
+						return decodeURIComponent(par[1]).split(",");						
+					}
+				}
 			}
 		})
 	</script>
